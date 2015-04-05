@@ -1,6 +1,6 @@
 # [Android Bootcamp] Project 0
 
-This is an Android demo application for displaying 
+This is an Android demo application for managing todos.
 
 Time spent: 3 hours spent in total
 
