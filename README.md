@@ -15,7 +15,7 @@ Completed user stories:
  
 Notes:
 
-Spent some time making the UI work across multiple phone resolutions by playing around with the RelativeLayout.
+I plan to add more features soon.
 
 Walkthrough of user stories:
 
