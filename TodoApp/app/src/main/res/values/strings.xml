@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TodoApp</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="app_title_label">Todo App</string>
+    <string name="todo_input_hint">Specify your todo</string>
+    <string name="todo_app_btn">Add</string>
+    <string name="title_activity_edit_item">Edit Item</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="edit_item_label">Edit Item Below:</string>
+    <string name="edit_item_text_label">Enter new todo value</string>
+    <string name="edit_text_button">Save</string>
+</resources>
