@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.view.View;
@@ -30,7 +31,8 @@ public class TodoActivity extends ActionBarActivity {
     private ListView lvItems;
 //    ArrayList<Todo> items;
     List<Todo> items;
-    ArrayAdapter<Todo> itemsAdapter;
+    TodosAdapter itemsAdapter;
+//    ArrayAdapter<Todo> itemsAdapter;
 
     private final int REQUEST_CODE = 200;
     private String todoFilename = "todo.txt";
@@ -46,7 +48,7 @@ public class TodoActivity extends ActionBarActivity {
 //        readItems();
         items = Todo.listAll(Todo.class);
 
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new TodosAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
 
         setupListViewListener();
@@ -80,7 +82,7 @@ public class TodoActivity extends ActionBarActivity {
     private void launchEditItemActivity(String value, int position) {
         Intent i = new Intent(TodoActivity.this, EditItemActivity.class);
         i.putExtra("position", position);
-        i.putExtra("value", value);
+        i.putExtra("Todo", (Todo)lvItems.getAdapter().getItem(position));
         startActivityForResult(i, REQUEST_CODE);
     }
 
@@ -89,14 +91,19 @@ public class TodoActivity extends ActionBarActivity {
         if(resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             int position = data.getExtras().getInt("position");
             String originalFieldValue = data.getExtras().getString("originalValue");
-            String fieldValue = data.getExtras().getString("value");
+//            String fieldValue = data.getExtras().getString("value");
+//            todo.name = fieldValue;
+            Todo editedTodo = data.getParcelableExtra("Todo");
             Todo todo = (Todo)lvItems.getAdapter().getItem(position);
-            todo.name = fieldValue;
+            // TODO: figure out how to pass todo into activity, make changes directly to db, and pass changed todo back to onActivityResult and set into the List
+            todo.name = editedTodo.name;
+            todo.dueDate = editedTodo.dueDate;
+            todo.priority = editedTodo.priority;
             todo.save();
             items.set(position, todo);
             itemsAdapter.notifyDataSetChanged();
 //            writeItems();
-            Toast.makeText(this, originalFieldValue + " changed to " + fieldValue, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, originalFieldValue + " changed to " + todo.name, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -144,7 +151,7 @@ public class TodoActivity extends ActionBarActivity {
 
     public void onAddItem(View view) {
         String fieldValue = etNewItem.getText().toString();
-        Todo todo = new Todo(fieldValue);
+        Todo todo = new Todo(fieldValue, 10, new Date());
         todo.save();
         itemsAdapter.add(todo);
         etNewItem.setText("");

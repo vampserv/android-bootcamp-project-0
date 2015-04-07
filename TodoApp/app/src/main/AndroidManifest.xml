@@ -20,6 +20,8 @@
             android:name=".EditItemActivity"
             android:label="@string/title_activity_edit_item" >
         </activity>
+        <meta-data android:name="DATABASE" android:value="todos.db" />
+        <meta-data android:name="VERSION" android:value="3" />
     </application>
 
 </manifest>

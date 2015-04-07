@@ -27,13 +27,60 @@
         android:layout_alignParentEnd="true"
         android:hint="@string/edit_item_text_label" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/edit_priority_label"
+        android:id="@+id/tvPriority"
+        android:layout_marginTop="43dp"
+        android:layout_below="@+id/etEditItem"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sbEditPriority"
+        android:max="100"
+        android:layout_below="@+id/tvPriority"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/edit_date_label"
+        android:id="@+id/tvEditDate"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/etEditDate"
+        android:layout_below="@+id/tvEditDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/sbEditPriority"
+        android:layout_alignEnd="@+id/sbEditPriority" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/edit_text_button"
         android:id="@+id/button"
         android:onClick="onEditItem"
-        android:layout_below="@+id/etEditItem"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/sbEditPriority"
+        android:layout_alignEnd="@+id/sbEditPriority"
+        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>
