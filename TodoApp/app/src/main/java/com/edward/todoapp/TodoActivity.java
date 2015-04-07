@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.File;
-import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,17 +18,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.edward.todoapp.models.Todo;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
 import org.apache.commons.io.FileUtils;
 
-public class TodoApp extends ActionBarActivity {
+public class TodoActivity extends ActionBarActivity {
 
     private EditText etNewItem;
     private ListView lvItems;
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
+//    ArrayList<Todo> items;
+    List<Todo> items;
+    ArrayAdapter<Todo> itemsAdapter;
 
     private final int REQUEST_CODE = 200;
-    private String todoFilename = "toto.txt";
+    private String todoFilename = "todo.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,10 @@ public class TodoApp extends ActionBarActivity {
         etNewItem = (EditText) findViewById(R.id.etNewItem);
         lvItems = (ListView) findViewById(R.id.lvItems);
 
-        readItems();
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+//        readItems();
+        items = Todo.listAll(Todo.class);
+
+        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
 
         setupListViewListener();
@@ -51,9 +58,11 @@ public class TodoApp extends ActionBarActivity {
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        Todo todo = (Todo)parent.getAdapter().getItem(position);
+                        todo.delete();
                         items.remove(position);
                         itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+//                        writeItems();
                         return true;
                     }
                 }
@@ -62,14 +71,14 @@ public class TodoApp extends ActionBarActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        launchEditItemActivity(lvItems.getAdapter().getItem(position).toString(), position);
+                        launchEditItemActivity(parent.getAdapter().getItem(position).toString(), position);
                     }
                 }
         );
     }
 
     private void launchEditItemActivity(String value, int position) {
-        Intent i = new Intent(TodoApp.this, EditItemActivity.class);
+        Intent i = new Intent(TodoActivity.this, EditItemActivity.class);
         i.putExtra("position", position);
         i.putExtra("value", value);
         startActivityForResult(i, REQUEST_CODE);
@@ -81,32 +90,35 @@ public class TodoApp extends ActionBarActivity {
             int position = data.getExtras().getInt("position");
             String originalFieldValue = data.getExtras().getString("originalValue");
             String fieldValue = data.getExtras().getString("value");
-            items.set(position, fieldValue);
+            Todo todo = (Todo)lvItems.getAdapter().getItem(position);
+            todo.name = fieldValue;
+            todo.save();
+            items.set(position, todo);
             itemsAdapter.notifyDataSetChanged();
-            writeItems();
+//            writeItems();
             Toast.makeText(this, originalFieldValue + " changed to " + fieldValue, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, todoFilename);
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            items = new ArrayList<String>();
-        }
-    }
-
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, todoFilename);
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void readItems() {
+//        File filesDir = getFilesDir();
+//        File todoFile = new File(filesDir, todoFilename);
+//        try {
+//            items = new ArrayList<String>(FileUtils.readLines(todoFile));
+//        } catch (IOException e) {
+//            items = new ArrayList<String>();
+//        }
+//    }
+//
+//    private void writeItems() {
+//        File filesDir = getFilesDir();
+//        File todoFile = new File(filesDir, todoFilename);
+//        try {
+//            FileUtils.writeLines(todoFile, items);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,8 +144,10 @@ public class TodoApp extends ActionBarActivity {
 
     public void onAddItem(View view) {
         String fieldValue = etNewItem.getText().toString();
-        itemsAdapter.add(fieldValue);
+        Todo todo = new Todo(fieldValue);
+        todo.save();
+        itemsAdapter.add(todo);
         etNewItem.setText("");
-        writeItems();
+//        writeItems();
     }
 }
