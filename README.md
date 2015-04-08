@@ -19,6 +19,6 @@ I plan to add more features soon.
 
 Walkthrough of user stories:
 
-![Video Walkthrough](android-bootcamp-project-0-v2.gif)
+![Video Walkthrough](android-bootcamp-project-0-v3.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
