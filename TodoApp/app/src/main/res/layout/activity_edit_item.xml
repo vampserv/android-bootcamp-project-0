@@ -68,6 +68,7 @@
         android:layout_below="@+id/tvEditDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:onClick="onEditDate"
         android:layout_alignRight="@+id/sbEditPriority"
         android:layout_alignEnd="@+id/sbEditPriority" />
 

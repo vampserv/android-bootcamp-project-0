@@ -52,6 +52,7 @@ public class TodoActivity extends ActionBarActivity {
         lvItems.setAdapter(itemsAdapter);
 
         setupListViewListener();
+
     }
 
     private void setupListViewListener() {
